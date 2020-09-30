@@ -3,20 +3,21 @@
 		<!--标题-->
 		<!-- <title :title="brandInfo.name"></title> -->
 		<!--品牌信息-->
-		<view>
+		<view class="box">
 			<view class="top">
 				<image :src="brandInfo.app_list_pic_url"></image>
 				<text>{{brandInfo.name}}</text>
 			</view>
-			<text>{{brandInfo.simple_desc}}</text>
+			<text class="desc">{{brandInfo.simple_desc}}</text>
 		</view>
+		<view class="line"></view>
 		<!--品牌列表-->
 		<view class="grid">
 			<view v-for="(item,index) in brandList">
 				<view class="item">
 					<image :src="item.app_list_pic_url"></image>
 					<text>{{item.name}}</text>
-					<text>￥ {{item.floor_price}}</text>
+					<text class="price">￥ {{item.floor_price}}</text>
 				</view>
 			</view>
 		</view>
@@ -85,11 +86,18 @@
 </script>
 
 <style>
-	
+	.box{
+		width: 100%;
+	}
+	.line{
+		height: 20rpx;
+		background-color: #F1F1F1;
+	}
 	.top{
 		position: relative;
 		height: 300rpx;
 		line-height: 300rpx;
+		background-color: #F1F1F1;
 	}
 	.top image{
 		height: 300rpx;
@@ -107,26 +115,40 @@
 		text-shadow: 2rpx 0 0 #808080;
 		text-decoration: underline;
 	}
+	.desc{
+		min-height: 150rpx;
+		text-align: center;
+		padding:20rpx 0rpx;
+		font-size: 28rpx;
+		justify-content: center;
+		vertical-align: middle;
+		
+	}
 	.grid{
 		display: grid;
 		display: -webkit-grid;
 		grid-template-columns: 50% 50%;
-		grid-template-rows: 300rpx 300rpx;
+		grid-template-rows: 250rpx 250rpx;
+		padding-top: 20rpx;
 	}
 	.grid .item{
 		display: flex;
 		flex-direction: column;
+		justify-content: center;
 	}
 	
 	.grid .item image{
-		width: 150rpx;
+		width: 200rpx;
 		height: 150rpx;
-		vertical-align: middle;
-		text-align: center;
-		justify-self: center;
+		align-self: center;
+		margin-bottom: 20rpx;
 	}
 	.grid .item text{
 		font-size: 24rpx;
+		text-align: center;
+	}
+	.grid .item .price{
+		color: #A52A2A;
 	}
 	
 </style>
