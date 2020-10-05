@@ -40,8 +40,10 @@
 		onLoad(options) {
 			console.log("onload");
 			this.brandId = options.brandId;
-			this.getBrandList();
-			this.getBrandDetail();
+			if(this.brandId != undefined){
+				this.getBrandList();
+				this.getBrandDetail();
+			}
 		},
 		methods:{
 			
@@ -107,7 +109,6 @@
 		position: absolute;
 		left: 0rpx;
 		margin: 0 auto;
-		vertical-align: middle;
 		text-align: center;
 		height: 40rpx;
 		width: 100%;

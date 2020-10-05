@@ -1,0 +1,149 @@
+<template>
+	<view>
+		<!--top 图片信息-->
+		<view class="top">
+			<image :src="topInfo.img_url"></image>
+			<text>{{topInfo.name}}</text>
+		</view>
+		<!--条件操作栏-->
+		<view class="common">
+				<view class="common-item">
+					<text>综合</text>
+				</view>
+				<view class="common-item">
+					<text>价格</text>
+					<image src="../../static/ic_arrow_default.png"></image>
+				</view>
+				<view class="common-item">
+					<text>分类</text>
+				</view>
+		</view>
+		<view class="line"></view>
+		<!--商品显示列表和条件弹框-->
+		<view>
+			<!--gridview 列表-->
+			<view class="grid">
+				<view v-for="(item,index) in goodsInfo">
+					<view>
+						<image :src="item.list_pic_url"></image>
+						<text>{{item.name}}</text>
+					</view>
+				</view>
+			</view>
+			<!--条件弹框-->
+			<view></view>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		
+		data(){
+			return{
+				topInfo:Object,
+				goodsInfo:[]
+			}
+		},
+		onLoad(){
+			this.getTopInfo();
+			this.getGoodsInfo();
+		},
+		methods:{
+			
+			//获取顶部数据
+			getTopInfo:function(){
+				var url="https://cdplay.cn/api/goods/hot";
+				this.$http.get(url).then((response)=>{
+					console.log("response:"+response);
+					this.topInfo = response.body.data.bannerInfo;
+				},(error)=>{
+					console.log("error:"+error);
+				});
+			},
+			//获取商品数据
+			getGoodsInfo:function(){
+				var url="https://cdplay.cn/api/goods/list?isNew=1&page=1&size =1000&order=asc&sort=default&categoryId=0";
+				this.$http.get(url).then((response)=>{
+					console.log("response:"+response);
+					this.goodsInfo = response.body.data.goodsList;
+				},(error)=>{
+					console.log("error:"+error);
+				});
+			}
+			
+		}
+		
+	}
+</script>
+
+<style>
+	.top{
+		position: relative;
+		height: 300rpx;
+		line-height: 300rpx;
+		background-color: #F1F1F1;
+	}
+	
+	.top image{
+		height: 300rpx;
+		width: 100%;
+	}
+	.top text{
+		position: absolute;
+		left: 0rpx;
+		margin: 0 auto;
+		text-align: center;
+		height: 40rpx;
+		width: 100%;
+		color: #FFFFFF;
+		text-shadow: 2rpx 0 0 #808080;
+	}
+
+	.line{
+		background-color: #F1F1F1;
+		height: 2rpx;
+	}
+
+	.common{
+		width: 100%;
+		height: 80rpx;
+		display: flex;
+		display: -webkit-flex;
+		justify-content:space-around;
+		flex-direction: row;
+		padding-top: 30rpx;
+		padding-bottom: 30rpx;
+		
+	}
+	
+	.common-item{
+		height: 80rpx;
+		display: flex;
+		display: -webkit-flex;
+		flex-direction: row;
+		justify-content: center;
+	
+	}
+	.common image{
+		width: 30rpx;
+		height: 30rpx;
+		
+	}
+	/*text-align横向居中*/
+	.common-item text{
+		font-size: 24rpx;
+		text-align: center;
+		
+	}
+	/*商品列表*/
+	.grid{
+		background-color: #F8F8F8;
+		padding-top: 20rpx;
+		display: grid;
+		display: -webkit-grid;
+		grid-template-columns: 50% 50%;
+		grid-template-rows: 300rpx 300rpx;
+	}
+	
+</style>

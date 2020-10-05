@@ -1,6 +1,6 @@
 {
-    "name" : "News",
-    "appid" : "",
+    "name" : "Shop",
+    "appid" : "__UNI__64985DC",
     "description" : "基于uni-app开发的新闻/资讯类App模板",
     "versionName" : "2.4.3",
     "versionCode" : 112,
@@ -20,11 +20,16 @@
             "android" : {
                 /* android打包配置 */
                 "permissions" : [
+                    "<uses-feature android:name=\"android.hardware.camera\"/>",
+                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
                     "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
                     "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
                 ],
                 "permissionPhoneState" : {
@@ -42,15 +47,17 @@
                     "csj" : {},
                     "gdt" : {},
                     "ks" : {}
-                }
+                },
+                "maps" : {}
             }
         }
     },
     "quickapp" : {},
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wx70bbcb95a14d8e65",
         "setting" : {
-            "urlCheck" : false
+            "urlCheck" : false,
+            "es6" : false
         },
         "usingComponents" : true
     },

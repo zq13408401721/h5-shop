@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="title">周一周四·新品首发</view>
+		<view class="title" @click="titleClick()">周一周四·新品首发</view>
 		<view class="grid-newgood">
 			<view v-for="(item,index) in renderList">
 				<view class="item">
@@ -39,7 +39,11 @@
 			}
 		},
 		methods:{
-			
+			titleClick:function(){
+				uni.navigateTo({
+					url:"/pages/news/newsgood-page"
+				})
+			}
 		}
 	}
 </script>

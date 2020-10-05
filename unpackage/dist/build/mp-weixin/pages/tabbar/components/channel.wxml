@@ -1,0 +1,1 @@
+<view class="channel"><block wx:for="{{renderList}}" wx:for-item="item" wx:for-index="index"><view><view class="channel-item"><image src="{{item.icon_url}}"></image><text>{{item.name}}</text></view></view></block></view>

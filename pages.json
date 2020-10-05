@@ -44,6 +44,12 @@
 			"style":{
 				"navigationBarTitleText":"品牌制造商"
 			}
+		},
+		{
+			"path":"pages/news/newsgood-page",
+			"style":{
+				"navigationBarTitleText":"新品"
+			}
 		}
     ],
 	"globalStyle": {

@@ -1,0 +1,1 @@
+.top{height:10rpx;background-color:#f1f1f1}.title{text-align:center;padding-top:20px;padding-bottom:20px;font-size:30rpx}.container{display:grid;display:-webkit-grid;grid-template-columns:50% 50%;grid-template-rows:150px 150px}.brand-item{height:150px;position:relative}.image{height:150px;width:100%;position:absolute}.text{position:absolute;top:20px;left:20px}

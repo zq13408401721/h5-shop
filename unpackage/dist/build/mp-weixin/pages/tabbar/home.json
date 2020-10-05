@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText": "首页",
+  "usingComponents": {
+    "page-header": "/pages/tabbar/components/page-header",
+    "banner": "/pages/tabbar/components/banner",
+    "channel": "/pages/tabbar/components/channel",
+    "brand": "/pages/tabbar/components/brand",
+    "newgood": "/pages/tabbar/components/newgood",
+    "hot": "/pages/tabbar/components/hot",
+    "topic": "/pages/tabbar/components/topic",
+    "goodlist": "/pages/tabbar/components/goodlist"
+  }
+}
