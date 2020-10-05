@@ -1,5 +1,5 @@
 <script>
-	
+	import $ from 'jquery'
 	export default {
 		onLaunch: function() {
 			console.log('App Launch');

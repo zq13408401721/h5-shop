@@ -8,19 +8,19 @@
 		<!--条件操作栏-->
 		<view class="common">
 				<view class="common-item">
-					<text>综合</text>
+					<text :class="this.selectType==='default'?'select':'normal'" @click="selectCategory('default')">综合</text>
 				</view>
 				<view class="common-item">
-					<text>价格</text>
-					<image src="../../static/ic_arrow_default.png"></image>
+					<text :class="this.selectType==='price'?'select':'normal'"  @click="selectCategory('price')">价格</text>
+					<image :src="this.img_price"></image>
 				</view>
 				<view class="common-item">
-					<text>分类</text>
+					<text :class="this.selectType==='category'?'select':'normal'"  @click="selectCategory('category')">分类</text>
 				</view>
 		</view>
 		<view class="line"></view>
 		<!--商品显示列表和条件弹框-->
-		<view>
+		<view class="info">
 			<!--gridview 列表-->
 			<view class="grid">
 				<view v-for="(item,index) in goodsInfo">
@@ -31,23 +31,43 @@
 				</view>
 			</view>
 			<!--条件弹框-->
-			<view></view>
+			<view class="dialog" v-show="this.selectType==='category'?true:false">
+				<view v-for="(item,index) in categoryList" :class="categoryId==item.id?'category_select':'category_normal'">
+					<text :class="categoryId==item.id?'select':'normal'">{{item.name}}</text>
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	
+	import $ from 'jquery'
+	
 	export default {
 		
 		data(){
 			return{
 				topInfo:Object,
-				goodsInfo:[]
+				goodsInfo:[],
+				order:String,
+				categoryId:0,
+				selectType:String,
+				img_price:String,
+				categoryList:[],
+				
 			}
 		},
 		onLoad(){
+			this.img_price = "../../static/ic_arrow_default.png";
 			this.getTopInfo();
 			this.getGoodsInfo();
+			/* $(function(){
+				$(".common-item text").click(function(){
+					$(".common-item text").removeClass("select");
+					$(this).addClass("select");
+				});
+			}); */
 		},
 		methods:{
 			
@@ -67,9 +87,38 @@
 				this.$http.get(url).then((response)=>{
 					console.log("response:"+response);
 					this.goodsInfo = response.body.data.goodsList;
+					this.categoryList = response.body.data.filterCategory;
+					this.categoryId = this.categoryList[1].id;
 				},(error)=>{
 					console.log("error:"+error);
 				});
+			},
+			selectCategory:function(type){
+				this.selectType = type;
+				if(type === "default"){
+					this.order = "asc";
+					this.categoryId = 0;
+					this.img_price = "../../static/ic_arrow_default.png"
+				}else if(type === "price"){
+					
+					if(this.img_price === "../../static/ic_arrow_default.png"){
+						this.img_price = "../../static/ic_arrow_up.png"
+						this.order = "asc";
+					}else if(this.img_price === "../../static/ic_arrow_up.png"){
+						this.img_price = "../../static/ic_arrow_down.png"
+						this.order = "desc";
+					}else if(this.img_price = "../../static/ic_arrow_down.png"){
+						this.img_price = "../../static/ic_arrow_up.png"
+						this.order = "asc";
+					}
+
+				}else if(type === "category"){
+					this.order = "asc";
+					this.img_price = "../../static/ic_arrow_default.png"
+				}
+				
+				
+				
 			}
 			
 		}
@@ -78,6 +127,7 @@
 </script>
 
 <style>
+	
 	.top{
 		position: relative;
 		height: 300rpx;
@@ -125,6 +175,23 @@
 		justify-content: center;
 	
 	}
+	/* 默认的文字颜色 */
+	.normal{
+		color: #333333;
+	}
+	/* 选中文字的颜色 */
+	.select{
+		color:#A52A2A;
+	}
+	.category_normal{
+		color: #333333;
+		border: 2rpx solid #333333;
+	}
+	.category_select{
+		color:#A52A2A;
+		border: 2rpx solid #A52A2A;
+	}
+	
 	.common image{
 		width: 30rpx;
 		height: 30rpx;
@@ -136,8 +203,31 @@
 		text-align: center;
 		
 	}
+	
+	.info{
+		position: relative;
+	}
+	
+	.info .dialog{
+		position: absolute;
+		display: flex;
+		display: -webkit-flex;
+		flex-direction: row;
+		justify-content: space-between;
+		background-color: #F8F8F8;
+		border: 2rpx solid #cccccc;
+		width: 100%;
+		padding: 20rpx;
+	}
+	
+	.info .dialog text{
+		font-size: 30rpx;
+		padding: 10rpx;
+	}
+	
 	/*商品列表*/
 	.grid{
+		position: absolute;
 		background-color: #F8F8F8;
 		padding-top: 20rpx;
 		display: grid;
