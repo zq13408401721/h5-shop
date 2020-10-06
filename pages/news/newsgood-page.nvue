@@ -24,16 +24,17 @@
 			<!--gridview 列表-->
 			<view class="grid">
 				<view v-for="(item,index) in goodsInfo">
-					<view>
+					<view class="good-item">
 						<image :src="item.list_pic_url"></image>
 						<text>{{item.name}}</text>
+						<text class="price">{{item.retail_price}}</text>
 					</view>
 				</view>
 			</view>
 			<!--条件弹框-->
-			<view class="dialog" v-show="this.selectType==='category'?true:false">
+			<view class="dialog" v-show="(this.selectType==='category' && this.showDialog)?true:false">
 				<view v-for="(item,index) in categoryList" :class="categoryId==item.id?'category_select':'category_normal'">
-					<text :class="categoryId==item.id?'select':'normal'">{{item.name}}</text>
+					<text :class="categoryId==item.id?'select':'normal'" @click="categoryClick(item.id)">{{item.name}}</text>
 				</view>
 			</view>
 		</view>
@@ -55,7 +56,7 @@
 				selectType:String,
 				img_price:String,
 				categoryList:[],
-				
+				showDialog:false,
 			}
 		},
 		onLoad(){
@@ -88,7 +89,6 @@
 					console.log("response:"+response);
 					this.goodsInfo = response.body.data.goodsList;
 					this.categoryList = response.body.data.filterCategory;
-					this.categoryId = this.categoryList[1].id;
 				},(error)=>{
 					console.log("error:"+error);
 				});
@@ -98,27 +98,39 @@
 				if(type === "default"){
 					this.order = "asc";
 					this.categoryId = 0;
-					this.img_price = "../../static/ic_arrow_default.png"
+					this.img_price = "../../static/ic_arrow_default.png";
 				}else if(type === "price"){
 					
 					if(this.img_price === "../../static/ic_arrow_default.png"){
-						this.img_price = "../../static/ic_arrow_up.png"
+						this.img_price = "../../static/ic_arrow_up.png";
 						this.order = "asc";
 					}else if(this.img_price === "../../static/ic_arrow_up.png"){
-						this.img_price = "../../static/ic_arrow_down.png"
+						this.img_price = "../../static/ic_arrow_down.png";
 						this.order = "desc";
 					}else if(this.img_price = "../../static/ic_arrow_down.png"){
-						this.img_price = "../../static/ic_arrow_up.png"
+						this.img_price = "../../static/ic_arrow_up.png";
 						this.order = "asc";
 					}
-
 				}else if(type === "category"){
 					this.order = "asc";
-					this.img_price = "../../static/ic_arrow_default.png"
+					this.img_price = "../../static/ic_arrow_default.png";
+					this.showDialog = true;
 				}
-				
-				
-				
+				this.updateCategory();
+			},
+			categoryClick:function(id){
+				this.categoryId = id;
+				this.showDialog = false;
+				this.updateCategory();
+			},
+			updateCategory:function(){
+				var url="https://cdplay.cn/api/goods/list?isNew=1&page=1&size=1000&order="+this.order+"&sort="+this.selectType+"&categoryId="+this.categoryId;
+				this.$http.get(url).then((response)=>{
+					console.log("response:"+response);
+					this.goodsInfo = response.body.data.goodsList;
+				},(error)=>{
+					console.log("error:"+error);
+				});
 			}
 			
 		}
@@ -206,6 +218,7 @@
 	
 	.info{
 		position: relative;
+		background-color: #007AFF;
 	}
 	
 	.info .dialog{
@@ -221,12 +234,13 @@
 	}
 	
 	.info .dialog text{
-		font-size: 30rpx;
-		padding: 10rpx;
+		font-size: 20rpx;
+		padding: 10rpx 20rpx;
 	}
 	
 	/*商品列表*/
 	.grid{
+		width: 100%;
 		position: absolute;
 		background-color: #F8F8F8;
 		padding-top: 20rpx;
@@ -234,6 +248,30 @@
 		display: -webkit-grid;
 		grid-template-columns: 50% 50%;
 		grid-template-rows: 300rpx 300rpx;
+		grid-row-gap: 4rpx;
+		grid-column-gap:4rpx;
+	}
+	.good-item{
+		width: 100%;
+		height: 100%;
+		text-align: center;
+		background-color: white;
+	}
+	.good-item image{
+		width: 200rpx;
+		height: 200rpx;
+		display: block;
+		margin: 0 auto;
+		
+	}
+	.good-item text{
+		overflow:hidden;
+		text-overflow: ellipsis;
+		white-space:nowrap;
+		font-size: 24rpx;
+	}
+	.good-item .price{
+		color: #A52A2A;
 	}
 	
 </style>

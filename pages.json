@@ -50,6 +50,12 @@
 			"style":{
 				"navigationBarTitleText":"新品"
 			}
+		},
+		{
+			"path":"pages/detail/good-detail",
+			"style":{
+				"navigationBarTitleText":"商品详情"
+			}
 		}
     ],
 	"globalStyle": {
