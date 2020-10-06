@@ -56,6 +56,12 @@
 			"style":{
 				"navigationBarTitleText":"商品详情"
 			}
+		},
+		{
+			"path":"pages/ucenter/login",
+			"style":{
+				"navigationBarTitleText":"登录"
+			}
 		}
     ],
 	"globalStyle": {

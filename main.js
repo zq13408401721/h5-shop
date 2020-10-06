@@ -8,6 +8,15 @@ Vue.prototype.$host = 'https://unidemo.dcloud.net.cn/';
 
 Vue.use(VueResource);
 
+//添加拦截器
+Vue.http.interceptors.push((request,next)=>{
+	var token = uni.getStorageSync("token");
+	request.headers.set('X-Nideshop-Token',token);
+	next(function(response){
+		return response;
+	});
+})
+
 App.mpType = 'app'
 
 const app = new Vue({
