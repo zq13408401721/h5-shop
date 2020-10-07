@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="page">
 		<!--标题-->
 		<view class="title">
 			<text>·30天无忧退货</text>
@@ -11,8 +11,9 @@
 			<ul>
 				<li v-for="(item,index) in cartList">
 					<view class="list-item">
-						<checkbox></checkbox>
-						<image :src="item.list_pic_url"></image>
+						<!-- <input type="checkbox" class="checkbox" v-on:click="selectItem(item)"></input> -->
+						<checkbox class="checkBox"></checkbox>
+						<image :src="(item.list_pic_url == undefined || item.list_pic_url.length==0?'':item.list_pic_url)"></image>
 						<view class="word">
 							<text class="item-txt">{{item.goods_name}}</text>
 							<text class="item-desc">xxx</text>
@@ -26,7 +27,7 @@
 		</view>
 		<!--操作栏-->
 		<view class="common">
-			<checkbox></checkbox>
+			<checkbox v-on:click="selectAll()"></checkbox>
 			<text class="txt_select_all">全选({{this.total_number}})</text>
 			<text class="txt_total_price">￥{{this.total_price}}</text>
 			<view class="common-btn">
@@ -39,12 +40,22 @@
 
 <script>
 	
+	/* import Checkbox from 'vant/lib/checkbox';
+	import 'vant/lib/checkbox/style'; */
+	
+	import {Checkbox} from 'vant';
+	
 	export default{
+		components:{
+			ck:Checkbox,
+		},
 		data(){
 			return{
 				cartList:[],
 				total_number:0,
 				total_price:0,
+				isSelectAll:0,
+				checked:true,
 			}
 		},
 		onLoad(){
@@ -70,6 +81,18 @@
 			},
 			order:function(){
 				console.log("order");
+			},
+			selectItem:function(item){
+				if(item.select == undefined || item.select == 0){
+					item.select = 1;
+				}else{
+					item.select = 0;
+				}
+			},
+			selectAll:function(){
+				if(this.isSelectAll == 0){
+					this.isSelectAll = 1;
+				}
 			}
 		}
 	}
@@ -77,6 +100,15 @@
 </script>
 
 <style>
+	.page{
+		overflow-x: hidden;
+		overflow-y: auto;
+		scrollbar-width: none; /* firefox */
+		-ms-overflow-style: none; /* IE 10+ */
+	}
+	.checkbox{
+		
+	}
 	
 	.title{
 		height: 70rpx;
@@ -90,11 +122,11 @@
 		text-align: center;
 	}
 	.list{
-		height: 200rpx;
+		
 	}
 	.list ul{
 		list-style: none;
-		padding: 0;
+		padding: 0 0 50px 0;
 	}
 	
 	.list ul li checkbox{
@@ -152,7 +184,7 @@
 		display: flex;
 		position: fixed;
 		flex-direction: row;
-		bottom: calc(50px + env(safe-area-inset-bottom));
+		bottom: 50px;
 		background-color: white;
 	}
 	
