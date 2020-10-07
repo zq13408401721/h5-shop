@@ -13,7 +13,7 @@
 				<image 
 					class="pic" 
 					:class="{current: current === index}"
-					:src="item.image_url" 
+					:src="item.image_url ? item.image_url : item.img_url" 
 					mode="aspectFill"
 					@click="navTo(item.link)"
 				></image>

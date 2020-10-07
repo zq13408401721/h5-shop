@@ -2,7 +2,7 @@
 	<view>
 		<view>
 			<!--轮播图-->
-			<view></view>
+			<banner :list="gallerys"></banner>
 			<!--信息-->
 			<view></view>
 			<!--评论-->
@@ -15,7 +15,7 @@
 			<!--参数-->
 			<view></view>
 			<!--详情-->
-			<view v-html="this.goodInfo">
+			<view v-html="this.goodInfo" class="html-div">
 				
 			</view>
 		</view>
@@ -47,7 +47,7 @@
 					<image src="../../static/img_cart.png"></image>
 					<text class="number">{{total}}</text>
 				</view>
-				<view class="item">
+				<view class="item" @click="buy('/pages/tabbar/cart')">
 					<text class="buy">立即购买</text>
 				</view>
 				<view class="item" @click="addCart()">
@@ -60,6 +60,9 @@
 </template>
 
 <script>
+	
+	import banner from '../tabbar/components/banner.vue'
+
 	export default{
 		data(){
 			return {
@@ -70,7 +73,12 @@
 				goodsId:0,
 				productId:0,
 				total:0,
+				gallerys:[],
+				current:0,
 			}
+		},
+		components:{
+			banner,
 		},
 		onLoad(options) {
 			//获取缓存数据
@@ -84,8 +92,9 @@
 					console.log("没有token");
 				}
 			}); */
+			
 			this.token = uni.getStorageSync("token");
-			this.setViewport("width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no");
+			this.setViewport("width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=no");
 			if(options.id != undefined){
 				this.getGoodInfo(options.id);
 			}
@@ -100,6 +109,9 @@
 			    if (!meta) return;
 			    meta.setAttribute('content', content);
 			},
+			bannerChange(e){
+				this.current = e.detail.current;
+			},
 			getGoodInfo:function(id){
 				var url="https://cdplay.cn/api/goods/detail?id="+id;
 				this.$http.get(url).then((response)=>{
@@ -107,6 +119,7 @@
 					this.goodInfo = response.body.data.info.goods_desc;
 					this.goodsId = response.body.data.productList[0].goods_id;
 					this.productId = response.body.data.productList[0].id;
+					this.gallerys = response.body.data.gallery;
 				},(error)=>{
 					console.log("error:"+error);
 				});
@@ -144,6 +157,9 @@
 						console.log("error:"+error);
 					});
 				}
+			},
+			buy:function(path){
+				this.$router.push({path:path,params:{token:this.token}});
 			}
 		}
 	}
@@ -152,19 +168,43 @@
 </script>
 
 <style>
+
 	
-	html,body{
-		padding: 0;
+	.html-div{
+		
+	}
+	
+	.html-div >>>p{
+		margin: 0rpx;
+		margin-block-start: 0rpx;
+		margin-block-end:0rpx;
+	}
+	.html-div >>>p >>>img{
+		width: 100%;
+		height: 100%;
 		margin: 0;
 	}
-	p{
-		margin: 0;
+	
+	.banner{
+		width: 100%;
+		height: 300rpx;
+		color: #FFFFFF;
+		font-size: 30rpx;
+		text-align: center;
 	}
-	img{
-	    width:100%;
-	    height:auto;
+	.banner image{
+		width: 100%;
+		transform: scale(0.98,0.88);
+		transition: transform 0.36s;
 	}
-	      
+	.custom-indicator{
+		position: absolute;
+		right: 5rpx;
+		bottom: 5rpx;
+		padding: 2rpx 5rpx;
+		font-size: 12rpx;
+		background: rgba(0,0,0,0.1);
+	}
 	
 	.select-params{
 		height: 70rpx;
@@ -269,6 +309,7 @@
 		color: block;
 		font-size: 10rpx;
 		position: absolute;
+		text-align: center;
 	}
 	.dialog-box .bottom .cart{
 		width: 100%;
