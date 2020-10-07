@@ -12,14 +12,24 @@
 				<li v-for="(item,index) in cartList">
 					<view class="list-item">
 						<!-- <input type="checkbox" class="checkbox" v-on:click="selectItem(item)"></input> -->
-						<checkbox class="checkBox"></checkbox>
+						<checkbox class="checkBox" :checked="(item.select == undefined || item.select == 0 ? false : true)"
+						@click="selectItem(item)"></checkbox>
 						<image :src="(item.list_pic_url == undefined || item.list_pic_url.length==0?'':item.list_pic_url)"></image>
 						<view class="word">
 							<text class="item-txt">{{item.goods_name}}</text>
 							<text class="item-desc">xxx</text>
 							<text class="item-txt">￥{{item.retail_price}}</text>
 						</view>
-						<text class="item-number">X{{item.number}}</text>
+						<text class="item-number" v-show="(isEditor == 0 ? true : false)">X{{item.number}}</text>
+						<!-- 编辑状态的显示内容 -->
+						<view class="editor-box" v-show="(isEditor == 0 ? false : true)">
+							<text class="editor-title">已选择 ></text>
+							<view class="number-box">
+								<text @click="changeNumber(0)">-</text>
+								<text>{{item.number}}</text>
+								<text @click="changeNumber(1)">+</text>
+							</view>
+						</view>
 						<view class="line"></view>
 					</view>
 				</li>
@@ -27,11 +37,11 @@
 		</view>
 		<!--操作栏-->
 		<view class="common">
-			<checkbox v-on:click="selectAll()"></checkbox>
+			<checkbox v-on:click="selectAll()" :checked="(isSelectAll == 0 ? false : true)"></checkbox>
 			<text class="txt_select_all">全选({{this.total_number}})</text>
 			<text class="txt_total_price">￥{{this.total_price}}</text>
 			<view class="common-btn">
-				<text class="txt_editor" @click="editor()">编辑</text>
+				<text class="txt_editor" @click="editor()">{{txtEditor}}</text>
 				<text class="txt_order" @click="order()">下单</text>
 			</view>
 		</view>
@@ -52,10 +62,11 @@
 		data(){
 			return{
 				cartList:[],
-				total_number:0,
-				total_price:0,
-				isSelectAll:0,
-				checked:true,
+				total_number:0, //总数量
+				total_price:0, //总价
+				isSelectAll:0, //是否全选
+				isEditor:0, //是否编辑状态
+				txtEditor:"编辑",
 			}
 		},
 		onLoad(){
@@ -78,6 +89,13 @@
 			},
 			editor:function(){
 				console.log("editor");
+				if(this.isEditor == 0){
+					this.isEditor = 1;
+					this.txtEditor = "完成";
+				}else{
+					this.isEditor = 0;
+					this.txtEditor = "编辑";
+				}
 			},
 			order:function(){
 				console.log("order");
@@ -85,15 +103,58 @@
 			selectItem:function(item){
 				if(item.select == undefined || item.select == 0){
 					item.select = 1;
+					this.isSelectAll = this.hasSelectAll();
 				}else{
 					item.select = 0;
+					this.isSelectAll = 0;
 				}
+				//计算选中的商品价格
+				this.countGoodPrice(false);
 			},
 			selectAll:function(){
 				if(this.isSelectAll == 0){
 					this.isSelectAll = 1;
+				}else{
+					this.isSelectAll = 0;
 				}
-			}
+				//计算选中的商品价格
+				this.countGoodPrice(true);
+			},
+			//是否全选
+			hasSelectAll:function(){
+				var value = 1;
+				this.cartList.map(function(item,index){
+					if(item.select == undefined || item.select == 0){
+						value = 0;
+						return value;
+					}
+				});
+				return value;
+			},
+			//计算商品的数量和价格，如果全选需要修改ischange
+			countGoodPrice:function(ischange){
+				var number=0,price = 0;
+				var value = this.isSelectAll;
+				this.cartList.map(function(item,index){
+					if(ischange){
+						item.select = value;
+					}
+					if(item.select == 1){
+						number += item.number;
+						price += item.number*item.retail_price;
+					}
+				});
+				this.total_number = number;
+				this.total_price = price;
+			},
+			changeNumber:function(value){
+				if(value == 0){
+					this.selectNumber--;
+					this.selectNumber = this.selectNumber < 1 ? 1 : this.selectNumber;
+				}else{
+					this.selectNumber++;
+				}
+			},
 		}
 	}
 	
@@ -174,7 +235,7 @@
 	
 	.list-item .word text{
 		height: 30rpx;
-		font-size: 20rpx;
+		font-size: 26rpx;
 		margin-top: -10rpx;
 	}
 	.common{
@@ -186,6 +247,7 @@
 		flex-direction: row;
 		bottom: 50px;
 		background-color: white;
+		padding-left: 20rpx;
 	}
 	
 	.common .common-btn{
@@ -221,6 +283,36 @@
 		text-align: center;
 		vertical-align: middle;
 		color: white;
+	}
+	.editor-box{
+		display: flex;
+		flex-direction: column;
+		position: absolute;
+		right: 0;
+	}
+	.editor-title{
+		height: 30rpx;
+		font-size: 26rpx;
+		margin-top: -70rpx;
+		position: absolute;
+		right: 0rpx;
+	}
+	/* 编辑状态 */
+	.number-box{
+		width: 200rpx;
+		height: 50rpx;
+		line-height: 50rpx;
+		display: flex;
+		align-items: center;
+		margin-top: 120rpx;
+		
+	}
+	.number-box text{
+		width: 100%;
+		height: 100%;
+		border: 1rpx solid #F1F1F1;
+		font-size: 24rpx;
+		text-align: center;
 	}
 	
 	
