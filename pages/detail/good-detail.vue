@@ -75,6 +75,7 @@
 				total:0,
 				gallerys:[],
 				current:0,
+				htmlStr:"",
 			}
 		},
 		components:{
@@ -92,9 +93,14 @@
 					console.log("没有token");
 				}
 			}); */
-			
+			this.htmlStr = "<html><head>"+
+				"<meta name='viewport' content='width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no'>"+
+				"<style>html,body{padding:0px;margin:0px;} p{padding:0px;margin:0px;} p img{width:100%;height:100%;}</style>"+
+				"</head>"+
+				"<body>word</body>"+
+				"</html>";
 			this.token = uni.getStorageSync("token");
-			this.setViewport("width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=no");
+			//this.setViewport("width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=no");
 			if(options.id != undefined){
 				this.getGoodInfo(options.id);
 			}
@@ -116,7 +122,7 @@
 				var url="https://cdplay.cn/api/goods/detail?id="+id;
 				this.$http.get(url).then((response)=>{
 					console.log("response:"+response);
-					this.goodInfo = response.body.data.info.goods_desc;
+					this.goodInfo = this.htmlStr.replace("word",response.body.data.info.goods_desc);
 					this.goodsId = response.body.data.productList[0].goods_id;
 					this.productId = response.body.data.productList[0].id;
 					this.gallerys = response.body.data.gallery;

@@ -25,9 +25,9 @@
 						<view class="editor-box" v-show="(isEditor == 0 ? false : true)">
 							<text class="editor-title">已选择 ></text>
 							<view class="number-box">
-								<text @click="changeNumber(0)">-</text>
+								<text @click="changeNumber(0,item)">-</text>
 								<text>{{item.number}}</text>
-								<text @click="changeNumber(1)">+</text>
+								<text @click="changeNumber(1,item)">+</text>
 							</view>
 						</view>
 						<view class="line"></view>
@@ -42,7 +42,7 @@
 			<text class="txt_total_price">￥{{this.total_price}}</text>
 			<view class="common-btn">
 				<text class="txt_editor" @click="editor()">{{txtEditor}}</text>
-				<text class="txt_order" @click="order()">下单</text>
+				<text class="txt_order" @click="order()">{{txtSubmit}}</text>
 			</view>
 		</view>
 	</view>
@@ -66,7 +66,8 @@
 				total_price:0, //总价
 				isSelectAll:0, //是否全选
 				isEditor:0, //是否编辑状态
-				txtEditor:"编辑",
+				txtEditor:"编辑", //编辑状态文字
+				txtSubmit:"下单", //下单
 			}
 		},
 		onLoad(){
@@ -92,13 +93,35 @@
 				if(this.isEditor == 0){
 					this.isEditor = 1;
 					this.txtEditor = "完成";
+					this.txtSubmit = "删除所选";
 				}else{
 					this.isEditor = 0;
 					this.txtEditor = "编辑";
+					this.txtSubmit = "下单";
 				}
 			},
 			order:function(){
 				console.log("order");
+				if(this.txtSubmit === "下单"){
+					//进入下单页面
+				}else if(this.txtSubmit === "删除所选"){
+					//提交删除商品的数据
+					var ids = this.getDeleteProductId();
+					var url = "https://cdplay.cn/api/cart/delete";
+					this.$http.post(url,{productIds:ids}).then((response)=>{
+						if(response.body.errno == 0){
+							this.cartList = response.body.data.cartList;
+							this.isEditor = 0;
+							this.txtSubmit = "下单";
+							this.txtEditor = "编辑";
+						}
+					},(error)=>{
+						console.log("error:"+error);
+					});
+				}
+			},
+			updateGood:function(){
+				//商品更新
 			},
 			selectItem:function(item){
 				if(item.select == undefined || item.select == 0){
@@ -147,14 +170,37 @@
 				this.total_number = number;
 				this.total_price = price;
 			},
-			changeNumber:function(value){
+			changeNumber:function(value,item){
 				if(value == 0){
-					this.selectNumber--;
-					this.selectNumber = this.selectNumber < 1 ? 1 : this.selectNumber;
+					item.number -= 1;
 				}else{
-					this.selectNumber++;
+					item.number += 1;
 				}
+				item.number = item.number <= 0 ? 1 : item.number;
+				//更新商品信息
+				var url = "https://cdplay.cn/api/cart/update";
+				this.$http.post(url,{product_id:item.product_id,goodsId:item.goods_id,number:item.number,id:item.id}).then((response)=>{
+					console.log("response:"+response);
+					if(response.body.errno == 0){
+						item.number = item.body.data.cartList[0].number;
+					}
+				},(error)=>{
+					console.log("error:"+error);
+				});
 			},
+			//获取删除商品信息
+			getDeleteProductId:function(){
+				var ids = "";
+				for(var i=0; i<this.cartList.length; i++){
+					if(this.cartList[i].select != undefined && this.cartList[i].select == 1){
+						ids += this.cartList[i].product_id+",";
+					}
+				}
+				if(ids.length > 0){
+					ids = ids.substring(0,ids.length-1);
+				}
+				return ids;
+			}
 		}
 	}
 	
