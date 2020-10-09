@@ -63,6 +63,7 @@
 						this.hotgoodList = response.data.data.hotGoodsList;
 						this.topicgoodList = response.data.data.topicList;
 						this.categoryList = response.data.data.categoryList;
+						console.log("网络请求成功");
 					}
 				})
 				/* this.$http.get(url).then((response)=>{
