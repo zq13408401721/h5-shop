@@ -1,16 +1,15 @@
 <template>
 	<view class="app">
-		<mescroll-body ref="mescrollRef">
-			<page-header :showFillView="true"></page-header>
+		
 			<!--头部轮播图-->
-			<banner :list="banners"></banner>
+			<banner :list="advertList"></banner>
 			<channel :list="channelData"></channel>
 			<brand :list="brandList"></brand>
 			<newgood :list="newgoodList"></newgood>
 			<hot :list="hotgoodList"></hot>
 			<topic :list="topicgoodList"></topic>
 			<goodlist :list="categoryList"></goodlist>
-		</mescroll-body>
+		
 	</view>
 </template>
 
@@ -28,7 +27,7 @@
 	console.log("home");
 	export default {
 		components:{
-			pageHeader,
+			
 			banner,
 			channel,
 			brand,
@@ -48,55 +47,35 @@
 				categoryList:[], //商品列表数据
 			}
 		},
-		computed:{
-			midAdvert(){
-				if(this.advertList.length === 0) return {};
-				//const res = this.advertList.filter(item=>item.advertList)
-			},
-			banners(){
-				return this.advertList;
-			},
-			channels(){
-				return this.channelData;
-			}
-		},
 		onLoad(){
-			console.log("onLoad");
 			this.loadData();
 		},
 		methods:{
-			async loadHome(){
-				console.log("loadHome--");
-				const res = await this.uni.request({
-					url: 'https://cdplay.cn/api/index',
-					method: 'GET',
-					data: {},
-					success: res => {
-						console.log("res:"+res);
-					},
-					fail: () => {
-						console.log("load home fail");
-					},
-					complete: () => {
-						console.log("load home complete");
-					}
-				});
-				console.log("res:"+res);
-			},
 			loadData:function(){
 				var url = "https://cdplay.cn/api/index";
-				this.$http.get(url).then((response)=>{
-					console.log("请求到数据："+response);
-					this.advertList = response.body.data.banner;
-					this.channelData = response.body.data.channel;
-					this.brandList = response.body.data.brandList;
-					this.newgoodList = response.body.data.newGoodsList;
-					this.hotgoodList = response.body.data.hotGoodsList;
-					this.topicgoodList = response.body.data.topicList;
-					this.categoryList = response.body.data.categoryList;
+				uni.request({
+					url:url,
+					success: (response) => {
+						this.advertList = response.data.data.banner;
+						this.channelData = response.data.data.channel;
+						this.brandList = response.data.data.brandList;
+						this.newgoodList = response.data.data.newGoodsList;
+						this.hotgoodList = response.data.data.hotGoodsList;
+						this.topicgoodList = response.data.data.topicList;
+						this.categoryList = response.data.data.categoryList;
+					}
+				})
+				/* this.$http.get(url).then((response)=>{
+					advertList = response.body.data.banner;
+					channelData = response.body.data.channel;
+					brandList = response.body.data.brandList;
+					newgoodList = response.body.data.newGoodsList;
+					hotgoodList = response.body.data.hotGoodsList;
+					topicgoodList = response.body.data.topicList;
+					categoryList = response.body.data.categoryList;
 				},(error)=>{
 					console.log("请求错误："+error);
-				})
+				}) */
 			}
 		}
 	}

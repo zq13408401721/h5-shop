@@ -1,57 +1,62 @@
 {
-  "pages": [
-    "pages/tabbar/home",
-    "pages/detail/detail",
-    "pages/tabbar/category",
-    "pages/tabbar/topic",
-    "pages/tabbar/cart",
-    "pages/tabbar/own",
-    "pages/brand/brand-detail"
-  ],
-  "subPackages": [],
-  "window": {
-    "navigationBarTextStyle": "white",
-    "navigationBarTitleText": "电商",
-    "navigationBarBackgroundColor": "#2F85FC",
-    "backgroundColor": "#FFFFFF"
-  },
-  "tabBar": {
-    "color": "#2C405A",
-    "selectedColor": "#007AFF",
-    "borderStyle": "black",
-    "backgroundColor": "#FFFFFF",
-    "list": [
-      {
-        "pagePath": "pages/tabbar/home",
-        "iconPath": "static/tabbar/ic_menu_choice_nor.png",
-        "selectedIconPath": "static/tabbar/ic_menu_choice_pressed.png",
-        "text": "首页"
-      },
-      {
-        "pagePath": "pages/tabbar/topic",
-        "iconPath": "static/tabbar/ic_menu_topic_nor.png",
-        "selectedIconPath": "static/tabbar/ic_menu_topic_pressed.png",
-        "text": "精选"
-      },
-      {
-        "pagePath": "pages/tabbar/category",
-        "iconPath": "static/tabbar/ic_menu_sort_nor.png",
-        "selectedIconPath": "static/tabbar/ic_menu_sort_pressed.png",
-        "text": "分类"
-      },
-      {
-        "pagePath": "pages/tabbar/cart",
-        "iconPath": "static/tabbar/ic_menu_shoping_nor.png",
-        "selectedIconPath": "static/tabbar/ic_menu_shoping_pressed.png",
-        "text": "商城"
-      },
-      {
-        "pagePath": "pages/tabbar/own",
-        "iconPath": "static/tabbar/ic_menu_me_nor.png",
-        "selectedIconPath": "static/tabbar/ic_menu_me_pressed.png",
-        "text": "我的"
-      }
-    ]
-  },
-  "usingComponents": {}
+    "pages": [
+        "pages/tabbar/home",
+        "pages/detail/detail",
+        "pages/tabbar/category",
+        "pages/tabbar/topic",
+        "pages/tabbar/cart",
+        "pages/tabbar/own",
+        "pages/brand/brand-detail",
+        "pages/news/newsgood-page",
+        "pages/detail/good-detail",
+        "pages/ucenter/login"
+    ],
+    "subPackages": [],
+    "window": {
+        "navigationBarTextStyle": "white",
+        "navigationBarTitleText": "电商",
+        "navigationBarBackgroundColor": "#2F85FC",
+        "backgroundColor": "#FFFFFF"
+    },
+    "tabBar": {
+        "color": "#2C405A",
+        "selectedColor": "#007AFF",
+        "borderStyle": "black",
+        "backgroundColor": "#FFFFFF",
+        "list": [
+            {
+                "pagePath": "pages/tabbar/home",
+                "iconPath": "static/tabbar/ic_menu_choice_nor.png",
+                "selectedIconPath": "static/tabbar/ic_menu_choice_pressed.png",
+                "text": "首页"
+            },
+            {
+                "pagePath": "pages/tabbar/topic",
+                "iconPath": "static/tabbar/ic_menu_topic_nor.png",
+                "selectedIconPath": "static/tabbar/ic_menu_topic_pressed.png",
+                "text": "精选"
+            },
+            {
+                "pagePath": "pages/tabbar/category",
+                "iconPath": "static/tabbar/ic_menu_sort_nor.png",
+                "selectedIconPath": "static/tabbar/ic_menu_sort_pressed.png",
+                "text": "分类"
+            },
+            {
+                "pagePath": "pages/tabbar/cart",
+                "iconPath": "static/tabbar/ic_menu_shoping_nor.png",
+                "selectedIconPath": "static/tabbar/ic_menu_shoping_pressed.png",
+                "text": "商城"
+            },
+            {
+                "pagePath": "pages/tabbar/own",
+                "iconPath": "static/tabbar/ic_menu_me_nor.png",
+                "selectedIconPath": "static/tabbar/ic_menu_me_pressed.png",
+                "text": "我的"
+            }
+        ]
+    },
+    "permission": {},
+    "usingComponents": {},
+    "sitemapLocation": "sitemap.json"
 }

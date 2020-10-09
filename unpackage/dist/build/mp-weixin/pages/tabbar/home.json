@@ -1,7 +1,6 @@
 {
   "navigationBarTitleText": "首页",
   "usingComponents": {
-    "page-header": "/pages/tabbar/components/page-header",
     "banner": "/pages/tabbar/components/banner",
     "channel": "/pages/tabbar/components/channel",
     "brand": "/pages/tabbar/components/brand",

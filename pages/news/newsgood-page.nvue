@@ -75,23 +75,36 @@
 			//获取顶部数据
 			getTopInfo:function(){
 				var url="https://cdplay.cn/api/goods/hot";
-				this.$http.get(url).then((response)=>{
+				/* this.$http.get(url).then((response)=>{
 					console.log("response:"+response);
 					this.topInfo = response.body.data.bannerInfo;
 				},(error)=>{
 					console.log("error:"+error);
-				});
+				}); */
+				uni.request({
+					url:url,
+					success: (response) => {
+						this.topInfo = response.data.data.bannerInfo;
+					}
+				})
 			},
 			//获取商品数据
 			getGoodsInfo:function(){
 				var url="https://cdplay.cn/api/goods/list?isNew=1&page=1&size =1000&order=asc&sort=default&categoryId=0";
-				this.$http.get(url).then((response)=>{
+				/* this.$http.get(url).then((response)=>{
 					console.log("response:"+response);
 					this.goodsInfo = response.body.data.goodsList;
 					this.categoryList = response.body.data.filterCategory;
 				},(error)=>{
 					console.log("error:"+error);
-				});
+				}); */
+				uni.request({
+					url:url,
+					success: (response) => {
+						this.goodsInfo = response.data.data.goodsList;
+						this.categoryList = response.data.data.filterCategory;
+					}
+				})
 			},
 			selectCategory:function(type){
 				this.selectType = type;
@@ -125,12 +138,18 @@
 			},
 			updateCategory:function(){
 				var url="https://cdplay.cn/api/goods/list?isNew=1&page=1&size=1000&order="+this.order+"&sort="+this.selectType+"&categoryId="+this.categoryId;
-				this.$http.get(url).then((response)=>{
+				/* this.$http.get(url).then((response)=>{
 					console.log("response:"+response);
 					this.goodsInfo = response.body.data.goodsList;
 				},(error)=>{
 					console.log("error:"+error);
-				});
+				}); */
+				uni.request({
+					url:url,
+					success: (response) => {
+						this.goodsInfo = response.data.data.goodsList;
+					}
+				})
 			},
 			openGoodDetail:function(id){
 				uni.navigateTo({

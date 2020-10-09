@@ -33,14 +33,14 @@
 </template>
 
 <script>
-	import $ from 'jquery'
+	import jquery from 'jquery';
 	export default {
 	
 		/*定义数据变量*/
 		data() {
 			return {
 				categoryData:Object,
-				listInfo:Object
+				listInfo:Object,
 			}
 		},
 		/*页面加载完成*/
@@ -56,20 +56,32 @@
 		methods: {
 			loadData:function(){
 				var url = "https://cdplay.cn/api/catalog/index";
-				this.$http.get(url).then((response)=>{
+				/* this.$http.get(url).then((response)=>{
 					console.log(response);
 					this.categoryData = response.body.data;
 				},(error)=>{
 					console.log(error);
+				}) */
+				uni.request({
+					url:url,
+					success: (response) => {
+						this.categoryData = response.data.data;
+					}
 				})
 			},
 			loadCagegoryList:function(categoryId){
 				var url = "https://cdplay.cn/api/catalog/current?id="+categoryId;
-				this.$http.get(url).then((response)=>{
+				/* this.$http.get(url).then((response)=>{
 					console.log(response);
 					this.listInfo = response.body.data.currentCategory;
 				},(error)=>{
 					console.log(error);
+				}) */
+				uni.request({
+					url:url,
+					success: (response) => {
+						this.listInfo = response.data.data.currentCategory;
+					}
 				})
 			},
 			onClickList:function(categoryId){

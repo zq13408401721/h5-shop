@@ -53,12 +53,7 @@
 	/* import Checkbox from 'vant/lib/checkbox';
 	import 'vant/lib/checkbox/style'; */
 	
-	import {Checkbox} from 'vant';
-	
 	export default{
-		components:{
-			ck:Checkbox,
-		},
 		data(){
 			return{
 				cartList:[],
@@ -74,6 +69,7 @@
 			console.log("onload");
 		},
 		onShow(){
+			//通过路由
 			var token = this.$route.params.token;
 			console.log("onShow:"+token);
 			this.loadCart();
@@ -81,12 +77,18 @@
 		methods:{
 			loadCart:function(){
 				var url="https://cdplay.cn/api/cart/index";
-				this.$http.get(url).then((response)=>{
+				/* this.$http.get(url).then((response)=>{
 					console.log("response:"+response);
 					this.cartList = response.body.data.cartList;
 				},(error)=>{
 					console.log("error:"+error);
-				});
+				}); */
+				uni.request({
+					url:url,
+					success: (response) => {
+						this.cartList = response.data.data.cartList;
+					}
+				})
 			},
 			editor:function(){
 				console.log("editor");
@@ -108,7 +110,7 @@
 					//提交删除商品的数据
 					var ids = this.getDeleteProductId();
 					var url = "https://cdplay.cn/api/cart/delete";
-					this.$http.post(url,{productIds:ids}).then((response)=>{
+					/* this.$http.post(url,{productIds:ids}).then((response)=>{
 						if(response.body.errno == 0){
 							this.cartList = response.body.data.cartList;
 							this.isEditor = 0;
@@ -117,7 +119,16 @@
 						}
 					},(error)=>{
 						console.log("error:"+error);
-					});
+					}); */
+					uni.request({
+						url:url,
+						success: (response) => {
+							this.cartList = response.data.data.cartList;
+							this.isEditor = 0;
+							this.txtSubmit = "下单";
+							this.txtEditor = "编辑";
+						}
+					})
 				}
 			},
 			updateGood:function(){
@@ -179,14 +190,22 @@
 				item.number = item.number <= 0 ? 1 : item.number;
 				//更新商品信息
 				var url = "https://cdplay.cn/api/cart/update";
-				this.$http.post(url,{product_id:item.product_id,goodsId:item.goods_id,number:item.number,id:item.id}).then((response)=>{
+				/* this.$http.post(url,{product_id:item.product_id,goodsId:item.goods_id,number:item.number,id:item.id}).then((response)=>{
 					console.log("response:"+response);
 					if(response.body.errno == 0){
 						item.number = item.body.data.cartList[0].number;
 					}
 				},(error)=>{
 					console.log("error:"+error);
-				});
+				}); */
+				uni.request({
+					url:url,
+					success: (response) => {
+						if(response.data.errno == 0){
+							item.number = item.data.data.cartList[0].number;
+						}
+					}
+				})
 			},
 			//获取删除商品信息
 			getDeleteProductId:function(){

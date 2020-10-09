@@ -15,7 +15,7 @@
 			<!--参数-->
 			<view></view>
 			<!--详情-->
-			<view v-html="this.goodInfo" class="html-div">
+			<view v-html="this.goodInfo">
 				
 			</view>
 		</view>
@@ -95,12 +95,11 @@
 			}); */
 			this.htmlStr = "<html><head>"+
 				"<meta name='viewport' content='width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no'>"+
-				"<style>html,body{padding:0px;margin:0px;} p{padding:0px;margin:0px;} p img{width:100%;height:100%;}</style>"+
+				"<style>html,body{padding:0px;margin:0px;} p{padding:0px;margin:0px;} img{width:100%;height:100%;}</style>"+
 				"</head>"+
 				"<body>word</body>"+
 				"</html>";
 			this.token = uni.getStorageSync("token");
-			//this.setViewport("width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=no");
 			if(options.id != undefined){
 				this.getGoodInfo(options.id);
 			}
@@ -120,7 +119,7 @@
 			},
 			getGoodInfo:function(id){
 				var url="https://cdplay.cn/api/goods/detail?id="+id;
-				this.$http.get(url).then((response)=>{
+				/* this.$http.get(url).then((response)=>{
 					console.log("response:"+response);
 					this.goodInfo = this.htmlStr.replace("word",response.body.data.info.goods_desc);
 					this.goodsId = response.body.data.productList[0].goods_id;
@@ -128,7 +127,16 @@
 					this.gallerys = response.body.data.gallery;
 				},(error)=>{
 					console.log("error:"+error);
-				});
+				}); */
+				uni.request({
+					url:url,
+					success: (response) => {
+						this.goodInfo = this.htmlStr.replace("word",response.data.data.info.goods_desc);
+						this.goodsId = response.data.data.productList[0].goods_id;
+						this.productId = response.data.data.productList[0].id;
+						this.gallerys = response.data.data.gallery;
+					}
+				})
 			},
 			openDialog:function(){
 				this.showDialog = true;
@@ -152,7 +160,7 @@
 					})
 				}else{
 					var url="http://cdplay.cn/api/cart/add";
-					this.$http.post(url,{goodsId:this.goodsId,number:this.selectNumber,productId:this.productId}).then((response)=>{
+					/* this.$http.post(url,{goodsId:this.goodsId,number:this.selectNumber,productId:this.productId}).then((response)=>{
 						console.log("response:"+response);
 						if(response.body.data.errno == 400){
 							console.log(response.body.data.errmsg);
@@ -161,10 +169,21 @@
 						}
 					},(error)=>{
 						console.log("error:"+error);
-					});
+					}); */
+					uni.request({
+						url:url,
+						success: (response) => {
+							if(response.data.data.errno == 400){
+								console.log(response.data.data.errmsg);
+							}else{
+								this.total = response.data.data.cartTotal.goodsCount;
+							}
+						}
+					})
 				}
 			},
 			buy:function(path){
+				//通过路由打开其他页面
 				this.$router.push({path:path,params:{token:this.token}});
 			}
 		}
@@ -175,21 +194,6 @@
 
 <style>
 
-	
-	.html-div{
-		
-	}
-	
-	.html-div >>>p{
-		margin: 0rpx;
-		margin-block-start: 0rpx;
-		margin-block-end:0rpx;
-	}
-	.html-div >>>p >>>img{
-		width: 100%;
-		height: 100%;
-		margin: 0;
-	}
 	
 	.banner{
 		width: 100%;

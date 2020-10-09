@@ -1,5 +1,5 @@
 {
-    "name" : "Shop",
+    "name" : "xshop",
     "appid" : "__UNI__64985DC",
     "description" : "基于uni-app开发的新闻/资讯类App模板",
     "versionName" : "2.4.3",
@@ -11,7 +11,6 @@
     "app-plus" : {
         "usingComponents" : true,
         "nvueCompiler" : "uni-app",
-        "renderer" : "native",
         /* 5+App特有相关 */
         "modules" : {},
         /* 模块配置 */
@@ -28,8 +27,11 @@
                     "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
+                    "<uses-permission android:name=\"android.permission.INTERNET\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\"/>",
                     "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
                 ],
                 "permissionPhoneState" : {
@@ -42,24 +44,22 @@
             },
             /* ios打包配置 */
             "sdkConfigs" : {
-                "ad" : {
-                    "360" : {},
-                    "csj" : {},
-                    "gdt" : {},
-                    "ks" : {}
-                },
+                "ad" : {},
                 "maps" : {}
             }
         }
     },
     "quickapp" : {},
     "mp-weixin" : {
-        "appid" : "wx70bbcb95a14d8e65",
+        "appid" : "wx477115e085f614db",
         "setting" : {
             "urlCheck" : false,
-            "es6" : false
+            "es6" : false,
+            "minified" : true,
+            "postcss" : false
         },
-        "usingComponents" : true
+        "usingComponents" : true,
+        "permission" : {}
     },
     "mp-alipay" : {
         "usingComponents" : true
