@@ -38,8 +38,6 @@
     "libVersion": "",
     "appid": "wx477115e085f614db",
     "projectname": "xshop",
-    "simulatorType": "wechat",
-    "simulatorPluginLibVersion": {},
     "condition": {
         "search": {
             "current": -1,
